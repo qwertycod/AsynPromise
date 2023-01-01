@@ -1,52 +1,76 @@
-const posts = [
-    { title: 'sky', body:'sky is blue' },
-    { title:'road', body: 'road is clean'}
-]
+    const students = ['Alex', 'Bob']
 
-function getPost() {
-    document.body.innerHTML = 'making get call...'
-    setTimeout(() => {
-        let output = '';
+    const validUrl = 'https://jsonplaceholder.typicode.com/users/1'
+    const incorrectUrl = 'https://jsonplaceholder.typicode.com/users/x'
 
-        posts.forEach((post, index)=> {
-            output += `<li>${post.title}</li>`;
-        })
-        document.body.innerHTML = output
-    }, 1000);
-}
-function createPost(post){
-    document.body.innerHTML = 'making post call...'
-    return new Promise((resolve, reject)=>{
+
+    function getAllstudents(student) {
+        students.push(student)
+        document.body.innerHTML = 'resolve case...'
         setTimeout(() => {
-            posts.push(post);
-            const error = false;
-            if(!error){
-                resolve(console.log(' #### post added #### '))
-            }
-            else{
-                reject('#### this error generates from reject block of promise #####')
-           }
+            let output = '';
+            students.forEach((s, index)=> {
+                output += '<li>' + s + '</li>' + '\n'
+            })
+            document.body.innerHTML = output
         }, 1000);
-    })
-}
+    }
 
-try{
-createPost({title: 'car', body:'a new car'})
-.then(getPost)      // this function 'getPost' is called when we resolve
-.catch(err => {
-     document.write(err.toString());
-     console.log(err.toString())
- })      // its called when error
-}
-catch(e){
-    document.write(e);
-}
+    function errHandler(err) {                 
+        document.write(err.toString());          // its called when error
+        console.log(err.toString())
+    }
 
-/* in promise we give two params resolve and reject, we write code
+    function updateNewStudent(){
+        var url = validUrl                         // for resolve case
+        //var url = incorrectUrl                  // for reject case
+        document.body.innerHTML = 'making get call...'
+        return new Promise((resolve, reject)=>{
+            let request = new XMLHttpRequest();
+            
+            request.addEventListener("loadend", function() {
+                const response = JSON.parse(this.responseText);
+                if (this.status === 200 && response.name) {                
+                resolve(response.name);
+                } else {
+                reject('some error occoured! Reject case called!');
+                }
+            });
+            request.open("GET", url, true);
+            request.send();
+        })
+    }
+
+    try{
+        updateNewStudent()
+            .then(getAllstudents)      // this function 'getAllstudents' is called when we resolve
+            .catch(errHandler)     
+    }
+    catch(e){
+        document.write(e);
+    }
+
+/* In Promise method we give two params, resolve and reject, we write code
 to call the resolve when there's no error and call rejet when we 
 get some error.
-In then() block of promise :
-if we had resolved in Promise, we can call our callback function;
-else  we call catch block.
-source : https://www.youtube.com/watch?v=PoRJizFvM7s
-*/
+
+Suppose our main aim is to call an API to get a student data.
+
+In the value of resolve varibale we pass a method which will be called
+when the main method returns a value(success case) and the value returned
+from the main method which is the student data in this case is passed
+to the resolve variable(the method), now its the duty of the resolve 
+method to show success message in the output.
+
+In case our main method fail which means our API failed to get the 
+student data we will have to raise an error, so the method which will actually
+raise an error is received in the reject parameter of the Promise method,
+we may raise an error directly also like using alert box in case of error,
+but using the reject variable(a method) is the norm in case of Promise.
+
+Once the resolve/reject method receives its data, it is passed to the
+then method in case of success
+or 
+the catch method in case of failure
+
+Source - https://qwertycod.com/javascript/handling-async-methods-made-easy/
