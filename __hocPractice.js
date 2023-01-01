@@ -1,36 +1,33 @@
-import React from 'react'
 
+// import React from 'react'
+// component HOC  {
 
+//     // cont f1 = () = {
 
-component HOC  {
+//         // logic
+//     }
+// }
 
-    // cont f1 = () = {
+// component childComp extends HOC {
+//     const hocFunc = {f1}
 
-        // logic
-    }
-}
+//     render() {
+//         return {
+//             <div>
+//             <button onClick={this.props.hocFunc}> </button>
+//             </div>
+//         }
 
-component childComp extends HOC {
+//         // mapStateToProps = () {
+//             // prop1 : state
+//         }
 
-    const hocFunc = {f1}
+//         // mapDispatchProps = () {
+//          //   f2 : action1
+//         }
 
-    render() {
-        return {
-            <div>
-            <button onClick={this.props.hocFunc}> </button>
-            </div>
-        }
+//         //connect(mapStateToProps,mapDispatchProps )
+//     }
 
-        // mapStateToProps = () {
-            // prop1 : state
-        }
-
-        // mapDispatchProps = () {
-         //   f2 : action1
-        }
-
-        //connect(mapStateToProps,mapDispatchProps )
-    }
-
-    export default(HOC(childComp))
-}
+//     export default(HOC(childComp))
+// }
